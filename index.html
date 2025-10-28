@@ -5,7 +5,16 @@
     <title>Task App</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        
+        .board {
+            display: flex;
+            flex-direction: row;
+        }
+
+        @media screen and (max-width: 400px) {
+            .board {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 
