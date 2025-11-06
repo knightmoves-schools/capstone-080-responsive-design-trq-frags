@@ -42,7 +42,8 @@ describe('the board class', () => {
     const numberFound = await page.$eval('style', (style) => {
   return (/@media[^{]*\(.*max-width.*400px.*\)[^{]*{[^}]*\.board[^{]*{[^}]*flex-direction\s*:\s*column\s*;/.test(style.innerHTML)) ? 1 : 0;
     });
-    
+    console.log(await page.$eval('style', (style) => style.innerHTML));
+
     expect(numberFound).toBe(1);
   });
 });
