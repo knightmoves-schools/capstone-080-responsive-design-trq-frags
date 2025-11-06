@@ -34,8 +34,12 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-  await browser.close();
+  if (browser) {
+    await browser.close();
+    browser = null;
+  }
 });
+
 
 describe('the board class', () => {
   it('should display the kanban columns vertically when the screen is a maximum width of 400px', async () => {
