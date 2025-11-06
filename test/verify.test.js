@@ -48,11 +48,13 @@ afterEach(async () => {
 
 describe('the board class', () => {
   it('should display the kanban columns vertically when the screen is a maximum width of 400px', async () => {
-    const numberFound = await page.$eval('style', (style) => {
-  return (/@media[^{]*\(.*max-width.*400px.*\)[^{]*{[^}]*\.board[^{]*{[^}]*flex-direction\s*:\s*column\s*;/.test(style.innerHTML)) ? 1 : 0;
-    });
-    console.log(await page.$eval('style', (style) => style.innerHTML));
+    const styleTags = await page.$$eval('style', (styles) =>
+      styles.map((style) => style.innerHTML).join('\n')
+    );
 
-    expect(numberFound).toBe(1);
+    console.log("STYLE CONTENT:\n", styleTags);
+
+    const hasMediaQuery = /@media\s+screen\s+and\s+\(max-width:\s*400px\)\s*{[^}]*\.board\s*{[^}]*flex-direction\s*:\s*column\s*;/.test(styleTags);
+    expect(hasMediaQuery).toBe(true);
   });
 });
