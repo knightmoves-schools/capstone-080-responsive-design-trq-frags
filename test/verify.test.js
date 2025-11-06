@@ -40,7 +40,7 @@ afterEach(async () => {
 describe('the board class', () => {
   it('should display the kanban columns vertically when the screen is a maximum width of 400px', async () => {
     const numberFound = await page.$eval('style', (style) => {
-      return style.innerHTML.match(/@media.*(.*max-width.*:.*400px.*).*{[\s\S][^}]*\.board.*{[\s\S][^}]*flex-direction.*:.*column.*;/g).length;
+  return (/@media[^{]*\(.*max-width.*400px.*\)[^{]*{[^}]*\.board[^{]*{[^}]*flex-direction\s*:\s*column\s*;/.test(style.innerHTML)) ? 1 : 0;
     });
     
     expect(numberFound).toBe(1);
