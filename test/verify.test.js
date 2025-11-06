@@ -28,10 +28,15 @@ afterAll(() => {
 });
 
 beforeEach(async () => {
-  browser = await puppeteer.launch();
-  page = await browser.newPage();
-  await page.goto("http://localhost:3000/index.html");
+  try {
+    browser = await puppeteer.launch();
+    page = await browser.newPage();
+    await page.goto("http://localhost:3000/index.html");
+  } catch (err) {
+    console.error("Error during setup:", err);
+  }
 });
+
 
 afterEach(async () => {
   if (browser) {
