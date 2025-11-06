@@ -6,15 +6,22 @@
     <link rel="stylesheet" href="style.css">
     <style>
         .board {
-            display: flex;
-            flex-direction: row; /* Default: horizontal layout */
-        }
+    display: flex;
+    flex-direction: row; /* Default: horizontal layout */
+    gap: 1rem; /* Optional: spacing between columns */
+}
 
-        @media screen and (max-width: 400px) {
-            .board {
-                flex-direction: column; /* Mobile: vertical layout */
-            }
-        }
+.column {
+    flex: 1; /* Ensures columns share space equally */
+}
+
+/* Mobile layout: stack columns vertically */
+@media screen and (max-width: 400px) {
+    .board {
+        flex-direction: column;
+    }
+}
+
     </style>
 </head>
 
