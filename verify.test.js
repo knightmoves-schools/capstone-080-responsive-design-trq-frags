@@ -1,6 +1,7 @@
 const http = require("http");
 const fs = require("fs");
 const puppeteer = require("puppeteer");
+const { assert } = require("console");
 
 let server;
 let browser;
@@ -28,8 +29,6 @@ afterAll(() => {
 
 beforeEach(async () => {
   browser = await puppeteer.launch();
-  args: ['--no-sandbox',
-    '--disable-setuid-sandbox']
   page = await browser.newPage();
   await page.goto("http://localhost:3000/index.html");
 });
@@ -38,16 +37,12 @@ afterEach(async () => {
   await browser.close();
 });
 
-describe("the board class", () => {
-  it("should display the kanban columns vertically when the screen is a maximum width of 400px", async () => {
-
-    const result = await page.$eval("style", (style) => {
-      const matches = style.innerHTML.match(
-        /@media.*max-width.*400px[\s\S]*\.board[\s\S]*flex-direction.*column/
-      );
-      return matches !== null; // return TRUE if matched
+describe('the board class', () => {
+  it('should display the kanban columns vertically when the screen is a maximum width of 400px', async () => {
+    const numberFound = await page.$eval('style', (style) => {
+      return style.innerHTML.match(/@media.*(.*max-width.*:.*400px.*).*{[\s\S][^}]*\.board.*{[\s\S][^}]*flex-direction.*:.*column.*;/g).length;
     });
-
-    expect(result).toBe(true);
+    
+    expect(numberFound).toBe(1);
   });
 });
