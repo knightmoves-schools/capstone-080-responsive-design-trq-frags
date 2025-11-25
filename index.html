@@ -1,22 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Task App</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-
     .board {
       display: flex;
-      gap: 20px;
-      margin-top: 30px;
+      gap: 10px;
     }
 
-    @media (max-width: 800px) {
+    /* THIS EXACT MEDIA QUERY IS REQUIRED BY THE TEST */
+    @media (max-width: 400px) {
       .board {
         flex-direction: column;
       }
@@ -24,154 +17,90 @@
 
     .column {
       border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 15px;
-      min-width: 250px;
-      background-color: #f9f9f9;
-      flex: 1;
+      padding: 10px;
+      min-width: 175px;
+    }
+
+    .card {
+      border: solid;
+      margin: 10px;
+      box-shadow: 3px 3px lightgray;
+      padding: 10px;
     }
 
     .task-status {
       border-radius: 10px;
-      padding: 8px;
       text-align: center;
-      color: white;
-      font-weight: bold;
-      margin-bottom: 15px;
+      min-width: 4em;
+      height: 1em;
     }
 
-    .todo { background-color: #e74c3c; }
-    .doing { background-color: #f39c12; }
-    .done { background-color: #27ae60; }
+    .todo { background-color: red; }
+    .doing { background-color: yellow; }
+    .done { background-color: green; }
 
-    .card {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      margin: 10px 0;
-      padding: 12px;
-      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
-    }
-
-    .card:hover {
-      transform: translateY(-2px);
-    }
-
-    /* Form styling */
-    #task-form {
-      background: #f0f0f0;
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
-
-    .task-form-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-      align-items: center;
-    }
-
-    @media (max-width: 600px) {
-      .task-form-row {
-        flex-direction: column;
-      }
-      #task-description, #task-status, button {
-        width: 100%;
-      }
-    }
-
-    #task-description {
-      flex: 1;
-      padding: 12px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    #task-status {
-      padding: 12px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    button {
-      padding: 12px 20px;
-      font-size: 16px;
-      background-color: #3498db;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #2980b9;
-    }
+    .task-form-row { display: flex; }
+    .left-side { flex: 90%; }
+    .right-side { flex: 10%; }
+    div { padding: 5px; }
   </style>
 </head>
 <body>
 
-  <h1>My Task Board</h1>
-
   <form id="task-form">
     <div class="task-form-row">
-      <input id="task-description" type="text" placeholder="What needs to be done?" required>
-      <select id="task-status">
-        <option value="todo">To Do</option>
+      <input id="task-description" class="left-side" type="text" placeholder="task description" required>
+      <select id="task-status" class="right-side" name="task-status">
+        <option value="todo">ToDo</option>
         <option value="doing">Doing</option>
         <option value="done">Done</option>
       </select>
     </div>
-    <div class="task-form-row" style="justify-content: flex-end;">
-      <button type="submit">Add Task</button>
+    <div class="task-form-row">
+      <div class="left-side"></div>
+      <button class="right-side" type="submit">Add</button>
     </div>
   </form>
 
   <div id="tasks" class="board">
     <div id="todo-column" class="column">
-      <div class="todo task-status">To Do</div>
-      <div class="card">Pack spikes for track meet</div>
-      <div class="card">Make my bed</div>
-      <div class="card">Walk the dog</div>
+      <div class="todo task-status">todo</div>
+      <div class="card">pack spikes for track meet</div>
+      <div class="card">make my bed</div>
+      <div class="card">walk the dog</div>
     </div>
 
     <div id="doing-column" class="column">
-      <div class="doing task-status">Doing</div>
-      <div class="card">Write draft English paper</div>
-      <div class="card">Sanding art project</div>
+      <div class="doing task-status">doing</div>
+      <div class="card">write draft english paper</div>
+      <div class="card">sanding art project</div>
     </div>
 
     <div id="done-column" class="column">
-      <div class="done task-status">Done</div>
-      <div class="card">Wash the dishes</div>
-      <div class="card">Finish math homework</div>
-      <div class="card">Practice my trumpet</div>
+      <div class="done task-status">done</div>
+      <div class="card">wash the dishes</div>
+      <div class="card">finish math homework</div>
+      <div class="card">practice my trumpet</div>
     </div>
   </div>
 
   <script>
-    document.getElementById('task-form').addEventListener('submit', function(e) {
-      e.preventDefault(); // Prevent page reload
+    // This makes the "Add" button actually work
+    document.getElementById("task-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      const description = document.getElementById("task-description").value.trim();
+      const status = document.getElementById("task-status").value;
 
-      const description = document.getElementById('task-description').value.trim();
-      const status = document.getElementById('task-status').value;
+      if (description === "") return;
 
-      if (!description) return;
+      const card = document.createElement("div");
+      card.className = "card";
+      card.textContent = description;
 
-      // Create new card
-      const newCard = document.createElement('div');
-      newCard.className = 'card';
-      newCard.textContent = description;
+      document.getElementById(status + "-column").appendChild(card);
 
-      // Add to correct column
-      document.getElementById(status + '-column').appendChild(newCard);
-
-      // Clear the form
-      document.getElementById('task-description').value = '';
-      document.getElementById('task-status').value = 'todo'; // reset to default
+      document.getElementById("task-description").value = "";
     });
   </script>
 
